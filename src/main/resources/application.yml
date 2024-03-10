@@ -1,0 +1,62 @@
+spring:
+# profiles:
+#  active:${APP_PROFILE:default}
+ application:
+  name: Asset Management API
+ jpa:
+  open-in-view: false
+  show-sql: true
+  properties:
+      "[hibernate.dialect]": org.hibernate.dialect.MySQLDialect
+      "[hibernate.generate.statistics]": false
+      "[hibernate.connection.provider_disables_autocommit]": true
+  generate-ddl: true
+  hibernate:
+    ddl-auto: update
+    
+ flyway:
+   url: ${mysql.url:jdbc:mysql://localhost:3306/asset_mgmt_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+   user: "root"
+   password: "root"
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   enabled: false
+   
+ mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+ cache:
+    type: redis
+ data:
+  
+  redis:
+   host: ${redis.url:localhost}
+   port: ${redis.port:6379}
+ 
+ datasource:
+    url: ${mysql.url:jdbc:mysql://localhost:3306/product_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: "root"
+    password: "root"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: false
+      connection-timeout: 250 # é feito em miliseconds. O ideal é manter baixo para estorar timeout
+      max-lifetime: 600000 #tempo adviso que uso conexão pode ficar aberto (19mins) - security
+      maximum-pool-size: 10 #numero até o max 20 conexões com o banco de dados. O ideal é manter baixo
+      minimum-idle: 5
+      pool-name: master
+
+ batch:
+    jdbc:
+      initialize-schema: "always"
+    job:
+      enabled: false
+
+
+server: 
+ port: ${PORT:8080}
+ compression:
+    enabled: false
+ undertow:
+    threads:
+      worker: 64
+      io: 4
