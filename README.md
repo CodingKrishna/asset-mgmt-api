@@ -35,3 +35,7 @@ Reference:
 https://github.com/dkambale/multi-tenant-microservice/tree/main
 https://www.youtube.com/watch?v=4jqfbiEXUtI
 
+
+![image](https://github.com/CodingKrishna/asset-mgmt-api/assets/11484609/c1ae47d4-aad4-45f0-b5c2-d9a632c1943a)
+
+![image](https://github.com/CodingKrishna/asset-mgmt-api/assets/11484609/d72386e4-4765-435a-96f3-9475240e63c2)
