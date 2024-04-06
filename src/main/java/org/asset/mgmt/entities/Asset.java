@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Asset extends BaseClientEntity {
+public class Asset extends BaseEntity {
     String name;
     String slNo;
     String refNo;

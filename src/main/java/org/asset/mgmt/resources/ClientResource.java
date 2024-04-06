@@ -9,6 +9,7 @@ import org.asset.mgmt.entities.Client;
 import org.asset.mgmt.mapper.GenericMapper;
 import org.asset.mgmt.repositries.ClientRepository;
 
+import org.asset.mgmt.service.TenantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class ClientResource {
 
     private final ClientRepository clientRepository;
 
+    private final TenantService tenantService;
+
     @GetMapping
     public ResponseEntity<List<ClientDTO>> listClients() {
         List<Client> clients = clientRepository.findAll();
@@ -34,10 +37,11 @@ public class ClientResource {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> createProduct(@RequestBody @Valid ClientDTO clientDTO) {
+    public  ResponseEntity<ClientDTO> createProduct(@RequestBody @Valid ClientDTO clientDTO) {
         Client client = mapper.toEntity(clientDTO);
         client = clientRepository.save(client);
         clientDTO.setId(client.getId());
+        tenantService.addTenant(client.getCompany());
         return ResponseEntity.status(HttpStatus.CREATED).body(clientDTO);
     }
 

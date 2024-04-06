@@ -32,8 +32,8 @@ public class AssetResource {
     @GetMapping
     public ResponseEntity<List<AssetDTO>> listAssetTypes(@PathVariable("clientId") Long clientId) {
         Pageable pageable = Pageable.ofSize(100);
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Invalid Client"));
-        List<Asset> assets = assetTypeRepository.findAllByClient(client, pageable).stream().toList();
+//        Client client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Invalid Client"));
+        List<Asset> assets = assetTypeRepository.findAll( pageable).stream().toList();
         List<AssetDTO> assetDTOList = assets.stream()
                 .map(assetType -> mapper.toDTO(assetType)).collect(Collectors.toList());
         return ResponseEntity.ok(assetDTOList);
@@ -42,9 +42,9 @@ public class AssetResource {
     @PostMapping
     public ResponseEntity<AssetDTO> createAssetType(@PathVariable("clientId") Long clientId,
                                                         @RequestBody @Valid AssetDTO assetDTO) {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Invalid Client"));
+//        Client client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Invalid Client"));
         Asset assetType = mapper.toEntity(assetDTO);
-        assetType.setClient(client);
+//        assetType.setClient(client);
         assetType = assetTypeRepository.save(assetType);
         assetDTO.setId(assetType.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(assetDTO);
