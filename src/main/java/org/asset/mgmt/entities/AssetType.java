@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class AssetType extends BaseClientEntity {
+public class AssetType extends BaseEntity {
     String type;
     boolean status;
 }
