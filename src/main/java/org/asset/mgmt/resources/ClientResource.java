@@ -12,6 +12,7 @@ import org.asset.mgmt.repositries.ClientRepository;
 import org.asset.mgmt.service.TenantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,14 +31,15 @@ public class ClientResource {
     private final TenantService tenantService;
 
     @GetMapping
-    public ResponseEntity<List<ClientDTO>> listClients() {
+    public ResponseEntity<List<ClientDTO>> listTenants() {
         List<Client> clients = clientRepository.findAll();
         List<ClientDTO> clientDTOList = clients.stream().map(client -> mapper.toDTO(client)).collect(Collectors.toList());
         return ResponseEntity.ok(clientDTOList);
     }
 
     @PostMapping
-    public  ResponseEntity<ClientDTO> createProduct(@RequestBody @Valid ClientDTO clientDTO) {
+    @Transactional
+    public  ResponseEntity<ClientDTO> createTenant(@RequestBody @Valid ClientDTO clientDTO) {
         Client client = mapper.toEntity(clientDTO);
         client = clientRepository.save(client);
         clientDTO.setId(client.getId());
@@ -46,7 +48,7 @@ public class ClientResource {
     }
 
     @PutMapping("/{clientId}")
-    public ResponseEntity<ClientDTO> updateProduct(
+    public ResponseEntity<ClientDTO> updateTenant(
             @PathVariable Long clientId, @RequestBody ClientDTO clientDTO) {
         Client client = mapper.toEntity(clientDTO);
         client = clientRepository.save(client);
@@ -54,7 +56,7 @@ public class ClientResource {
     }
 
     @DeleteMapping("/{clientId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long clientId) {
+    public ResponseEntity<Void> deleteTenant(@PathVariable Long clientId) {
         clientRepository.deleteById(clientId);
         return ResponseEntity.noContent().build();
     }

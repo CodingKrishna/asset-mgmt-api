@@ -1,9 +1,8 @@
 package org.asset.mgmt.service;
 
-import org.asset.mgmt.config.MultiTenantConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -22,6 +21,7 @@ import java.util.function.Consumer;
 
 
 @Service
+@Slf4j
 public class TenantService   {
 
 
@@ -49,11 +49,8 @@ public class TenantService   {
     public void addTenant(String tenantName) {
         try  {
             Connection connection = dataSource.getConnection();
-            // Execute SQL script to create tables in the new schema
             executeSqlScript(connection,"cli_"+tenantName);
-            TenantDataSourceService.writeTenantIdToFile(tenantName);
             tenantDataSourceConsumer.accept(tenantName);
-
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
